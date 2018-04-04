@@ -1,12 +1,18 @@
 package bolodya.mcdu;
 
-import org.springframework.boot.SpringApplication;
+import bolodya.mcdu.view.MainFrame;
+import lombok.val;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
 public class McduApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(McduApplication.class, args);
+        val context = new SpringApplicationBuilder(McduApplication.class)
+                .headless(false)
+                .run(args);
+
+		context.getBean(MainFrame.class);
 	}
 }
