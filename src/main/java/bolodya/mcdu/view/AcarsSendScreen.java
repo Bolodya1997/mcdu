@@ -14,9 +14,9 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("acars-menu")
+@Component("acars-send")
 @NoArgsConstructor
-public class AcarsMenuScreen extends AbstractScreen {
+public class AcarsSendScreen extends AbstractScreen {
 
     @Autowired
     private ApplicationContext context;
@@ -26,17 +26,27 @@ public class AcarsMenuScreen extends AbstractScreen {
 
     private final Map<Pair<Integer, Integer>, Runnable> screenButtonsListeners = new HashMap<>();
 
+    private TimePanel timePanel = new TimePanel("IN PROG");
+
+    private boolean activated = false;
+
     @PostConstruct
     private void init() {
         screenButtonsListeners.put(new Pair<>(1, 6), () -> {
-            val screen = context.getBean("mcdu-menu", AbstractScreen.class);
+            if (!activated)
+                return;
+
+            val screen = context.getBean("acars-init", AbstractScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
             mcduView.setScreen(screen);
         });
 
-        screenButtonsListeners.put(new Pair<>(2, 6), () -> {
-            val screen = context.getBean("acars-init", AbstractScreen.class);
+        screenButtonsListeners.put(new Pair<>(2, 1), () -> {
+            if (!activated)
+                return;
+
+            val screen = context.getBean("aoc-menu", AbstractScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
             mcduView.setScreen(screen);
@@ -117,14 +127,14 @@ public class AcarsMenuScreen extends AbstractScreen {
 
             field26.add(Box.createGlue(), _constraints);
 
-//            ------   power   ------
-            val power = new JLabel("POWER");
-            power.setFont(font);
-            power.setForeground(Colors.BROWN);
+//            ------   utc   ------
+            val utc = new JLabel("UTC");
+            utc.setFont(font);
+            utc.setForeground(Colors.BROWN);
 
             _constraints.weightx = 0;
 
-            field26.add(power, _constraints);
+            field26.add(utc, _constraints);
 
 //            ------   asterisk   ------
             val asterisk = new JLabel("*");
@@ -151,7 +161,6 @@ public class AcarsMenuScreen extends AbstractScreen {
             time.add(Box.createGlue(), _constraints);
 
 //            ------   timePanel   ------
-            var timePanel = new TimePanel();
             timePanel.setFont(font);
             timePanel.setForeground(Colors.GREEN);
 
@@ -189,8 +198,17 @@ public class AcarsMenuScreen extends AbstractScreen {
 //        }
     }
 
+    void activate(final boolean activated) {
+        if (activated)
+            timePanel.setText("SATCOM");
+        else
+            timePanel.setText("IN PROG");
+
+        this.activated = activated;
+    }
+
     @Override
-    public Map<Pair<Integer, Integer>, Runnable> getScreenButtonsListeners() {
+    Map<Pair<Integer, Integer>, Runnable> getScreenButtonsListeners() {
         return screenButtonsListeners;
     }
 }

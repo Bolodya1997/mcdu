@@ -2,6 +2,7 @@ package bolodya.mcdu.view;
 
 import bolodya.mcdu.controller.Keyboard;
 import bolodya.mcdu.controller.KeyboardListener;
+import bolodya.mcdu.controller.Sender;
 import bolodya.mcdu.util.Pair;
 import lombok.NoArgsConstructor;
 import lombok.experimental.var;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,8 +57,8 @@ public class AcarsInitScreen extends AbstractScreen {
     private final JLabel send = new JLabel("SEND*", JLabel.RIGHT);
 
     private final JLabel input = new JLabel("", JLabel.LEFT);
-
     private boolean clear = false;
+
     private KeyboardListener kbListener = new KeyboardListener() {
         @Override
         public void printCharacter(char character) {
@@ -81,12 +83,248 @@ public class AcarsInitScreen extends AbstractScreen {
 
     @PostConstruct
     private void init() {
+        screenButtonsListeners.put(new Pair<>(1, 1), () -> {
+            if (clear) {
+                clear = false;
+
+                flt.setVisible(false);
+                fltEmpty.setVisible(true);
+            } else if (input.getText().length() == 4) {
+                flt.setText(String.format("%s/01", input.getText()));
+
+                fltEmpty.setVisible(false);
+                flt.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(1, 2), () -> {
+            if (clear) {
+                clear = false;
+
+                dept.setVisible(false);
+                deptEmpty.setVisible(true);
+            } else if (input.getText().length() == 4) {
+                dept.setText(input.getText());
+
+                deptEmpty.setVisible(false);
+                dept.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(1, 3), () -> {
+            if (clear) {
+                clear = false;
+
+                fuel.setVisible(false);
+                fuelEmpty.setVisible(true);
+            } else if (input.getText().length() <= 6) {
+                final int data;
+                try {
+                    data = Integer.parseInt(input.getText());
+                } catch (Exception e) {
+                    errorInput();
+                    return;
+                }
+
+                fuel.setText(String.format("%06d LB", data));
+
+                fuelEmpty.setVisible(false);
+                fuel.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(1, 4), () -> {
+            if (clear) {
+                clear = false;
+
+                gw.setVisible(false);
+                gwEmpty.setVisible(true);
+            } else if (input.getText().length() <= 5) {
+                final double data;
+                try {
+                    data = Double.parseDouble(input.getText());
+                    if (data < 0.1 || 999.9 < data)
+                        throw new NumberFormatException();
+                } catch (Exception e) {
+                    errorInput();
+                    return;
+                }
+
+                gw.setText(String.format("%s LB/1000",
+                        new DecimalFormat("000.0").format(data)));
+
+                gwEmpty.setVisible(false);
+                gw.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(2, 2), () -> {
+            if (clear) {
+                clear = false;
+
+                dest.setVisible(false);
+                destEmpty.setVisible(true);
+            } else if (input.getText().length() == 4) {
+                dest.setText(input.getText());
+
+                destEmpty.setVisible(false);
+                dest.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(2, 3), () -> {
+            if (clear) {
+                clear = false;
+
+                ete.setVisible(false);
+                eteEmpty.setVisible(true);
+            } else if (input.getText().length() == 4) {
+                final int hour, minute;
+                try {
+                    hour = Integer.parseInt(input.getText().substring(0, 2));
+                    if (23 < hour)
+                        throw new NumberFormatException();
+
+                    minute = Integer.parseInt(input.getText().substring(2, 4));
+                    if (59 < minute)
+                        throw new NumberFormatException();
+                } catch (Exception e) {
+                    errorInput();
+                    return;
+                }
+
+                ete.setText(String.format("%02d:%02d", hour, minute));
+
+                eteEmpty.setVisible(false);
+                ete.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
+        screenButtonsListeners.put(new Pair<>(2, 4), () -> {
+            if (clear) {
+                clear = false;
+
+                sch.setVisible(false);
+                schEmpty.setVisible(true);
+            } else if (input.getText().length() == 4) {
+                final int hour, minute;
+                try {
+                    hour = Integer.parseInt(input.getText().substring(0, 2));
+                    if (23 < hour)
+                        throw new NumberFormatException();
+
+                    minute = Integer.parseInt(input.getText().substring(2, 4));
+                    if (59 < minute)
+                        throw new NumberFormatException();
+                } catch (Exception e) {
+                    errorInput();
+                    return;
+                }
+
+                sch.setText(String.format("%02d:%02d", hour, minute));
+
+                schEmpty.setVisible(false);
+                sch.setVisible(true);
+            } else {
+                errorInput();
+                return;
+            }
+            input.setText("");
+
+            setSendVisible();
+        });
+
         screenButtonsListeners.put(new Pair<>(1, 6), () -> {
-            val acarsMenuScreen = context.getBean("acars-menu", AbstractScreen.class);
+            flt.setVisible(false);
+            fltEmpty.setVisible(true);
+            dept.setVisible(false);
+            deptEmpty.setVisible(true);
+            fuel.setVisible(false);
+            fuelEmpty.setVisible(true);
+            gw.setVisible(false);
+            gwEmpty.setVisible(true);
+            dest.setVisible(false);
+            destEmpty.setVisible(true);
+            ete.setVisible(false);
+            eteEmpty.setVisible(true);
+            sch.setVisible(false);
+            schEmpty.setVisible(true);
+
+            input.setText("");
+            clear = false;
+
+            val screen = context.getBean("acars-menu", AbstractScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
-            mcduView.setScreen(acarsMenuScreen);
+            mcduView.setScreen(screen);
         });
+
+        screenButtonsListeners.put(new Pair<>(2, 5), () -> {
+            if (!send.isVisible())
+                return;
+
+            input.setText("");
+            clear = false;
+
+            val screen = context.getBean(AcarsSendScreen.class);   //  TODO: replace with interface
+            val mcduView = context.getBean(MCDUView.class);
+
+            screen.activate(false);
+            mcduView.setScreen(screen);
+
+            context.getBean(Sender.class).send(() -> screen.activate(true));
+        });
+    }
+
+    private void setSendVisible() {
+        send.setVisible(flt.isVisible() && dept.isVisible() &&
+                fuel.isVisible() && gw.isVisible() &&
+                dest.isVisible() && ete.isVisible() &&
+                sch.isVisible());
+    }
+
+    private void errorInput() {
+        input.setForeground(Color.RED);
+
+        val timer = new Timer(200, e -> input.setForeground(Colors.WHITE));
+        timer.setRepeats(false);
+        timer.start();
     }
 
     @Override
@@ -565,6 +803,7 @@ public class AcarsInitScreen extends AbstractScreen {
 //            ------   send   ------
             send.setFont(font);
             send.setForeground(Colors.BLUE);
+            send.setVisible(false);
 
             _constraints.weighty = 0;
 
@@ -692,6 +931,8 @@ public class AcarsInitScreen extends AbstractScreen {
             keyboard.addListener(kbListener);
         else
             keyboard.removeListener(kbListener);
+
+        setSendVisible();
 
         super.setVisible(visible);
     }

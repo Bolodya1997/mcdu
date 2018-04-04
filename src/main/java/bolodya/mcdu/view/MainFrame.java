@@ -75,7 +75,7 @@ public class MainFrame extends JFrame implements MCDUView {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 //        ------   size   ------
-        setSize(WIDTH, HEIGHT);
+        setSize(WIDTH * 2, HEIGHT);
         setResizable(false);
 
         addComponentListener(new ComponentAdapter() {
@@ -83,13 +83,15 @@ public class MainFrame extends JFrame implements MCDUView {
             public void componentShown(ComponentEvent e) {
                 val size = getContentPane().getSize();
 
-                setSize(WIDTH + (WIDTH - size.width),
+                setSize((WIDTH * 2) + ((WIDTH * 2) - size.width),
                         HEIGHT + (HEIGHT - size.height));
             }
         });
 
-//        ------   main panel   ------
+//        ------   panels   ------
+        setLayout(new GridLayout(1, 2));
         add(mainPanel);
+        add(context.getBean(PlainPanel.class));
 
 //        ------   keyboard   ------
         final Supplier<Boolean> hasCharacterListener = () -> characterListener != null;

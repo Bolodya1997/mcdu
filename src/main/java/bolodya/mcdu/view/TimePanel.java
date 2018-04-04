@@ -12,6 +12,12 @@ class TimePanel extends JPanel {
     private JLabel textLabel = new JLabel("SATCOM");
     private JLabel timeLabel = new JLabel();
 
+    TimePanel(String text) {
+        this();
+
+        textLabel.setText(text);
+    }
+
     TimePanel() {
         setOpaque(false);
         setLayout(new GridBagLayout());
@@ -41,6 +47,10 @@ class TimePanel extends JPanel {
 
         timeLabel.setText(String.format("%02d:%02d",
                 time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE)));
+    }
+
+    public void setText(String text) {
+        textLabel.setText(text);
     }
 
     @Override
