@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component("acars-send")
 @NoArgsConstructor
-public class AcarsSendScreen extends AbstractScreen {
+public class AcarsSendScreen extends AbstractSendScreen {
 
     @Autowired
     private ApplicationContext context;
@@ -51,6 +51,16 @@ public class AcarsSendScreen extends AbstractScreen {
 
             mcduView.setScreen(screen);
         });
+    }
+
+    @Override
+    void activate(final boolean activated) {
+        if (activated)
+            timePanel.setText("SATCOM");
+        else
+            timePanel.setText("IN PROG");
+
+        this.activated = activated;
     }
 
     @Override
@@ -196,15 +206,6 @@ public class AcarsSendScreen extends AbstractScreen {
 //        for (var c : getComponents()) {
 //            ((JComponent) c).setBorder(BorderFactory.createLineBorder(Color.WHITE));
 //        }
-    }
-
-    void activate(final boolean activated) {
-        if (activated)
-            timePanel.setText("SATCOM");
-        else
-            timePanel.setText("IN PROG");
-
-        this.activated = activated;
     }
 
     @Override

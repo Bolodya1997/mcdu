@@ -302,7 +302,7 @@ public class AcarsInitScreen extends AbstractScreen {
             input.setText("");
             clear = false;
 
-            val screen = context.getBean(AcarsSendScreen.class);   //  TODO: replace with interface
+            val screen = context.getBean("acars-send", AbstractSendScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
             screen.activate(false);

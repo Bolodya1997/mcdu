@@ -14,9 +14,9 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("aoc-menu")
+@Component("aoc-requests")
 @NoArgsConstructor
-public class AOCMenuScreen extends AbstractScreen {
+public class AOCRequestsScreen extends AbstractScreen {
 
     @Autowired
     private ApplicationContext context;
@@ -29,14 +29,14 @@ public class AOCMenuScreen extends AbstractScreen {
     @PostConstruct
     private void init() {
         screenButtonsListeners.put(new Pair<>(1, 6), () -> {
-            val screen = context.getBean("acars-send", AbstractScreen.class);
+            val screen = context.getBean("aoc-menu", AbstractScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
             mcduView.setScreen(screen);
         });
 
-        screenButtonsListeners.put(new Pair<>(2, 2), () -> {
-            val screen = context.getBean("aoc-requests", AbstractScreen.class);
+        screenButtonsListeners.put(new Pair<>(1, 3), () -> {
+            val screen = context.getBean("aoc-weather", AbstractScreen.class);
             val mcduView = context.getBean(MCDUView.class);
 
             mcduView.setScreen(screen);
@@ -48,7 +48,7 @@ public class AOCMenuScreen extends AbstractScreen {
         val font = defaultFont.deriveFont((float) (20 * sizeModifier));
 
 //        ------   header   ------
-        val header = new JLabel("AOC -MAIN MENU", JLabel.CENTER);
+        val header = new JLabel("AOC -REQUESTS", JLabel.CENTER);
         header.setFont(font);
         header.setForeground(Colors.WHITE);
 
@@ -65,7 +65,7 @@ public class AOCMenuScreen extends AbstractScreen {
         add(header, constraints);
 
 //        ------   1 1   ------
-        val field11 = new JLabel("<PREFLIGHT", JLabel.LEFT);
+        val field11 = new JLabel("<INITIALIZATION", JLabel.LEFT);
         field11.setFont(font);
         field11.setForeground(Colors.WHITE);
 
@@ -76,27 +76,27 @@ public class AOCMenuScreen extends AbstractScreen {
         add(field11, constraints);
 
 //        ------   1 2   ------
-        val field12 = new JLabel("<INFLIGHT", JLabel.LEFT);
+        val field12 = new JLabel("<WT/BALANCE", JLabel.LEFT);
         field12.setFont(font);
         field12.setForeground(Colors.WHITE);
 
         add(field12, constraints);
 
 //        ------   1 3   ------
-        val field13 = new JLabel("<POSTFLIGHT", JLabel.LEFT);
+        val field13 = new JLabel("<WX REQ", JLabel.LEFT);
         field13.setFont(font);
         field13.setForeground(Colors.WHITE);
 
         add(field13, constraints);
 //        ------   1 4   ------
-        val field14 = new JLabel("<OOOI TIMES", JLabel.LEFT);
+        val field14 = new JLabel("<TO DLY/RTN", JLabel.LEFT);
         field14.setFont(font);
         field14.setForeground(Colors.WHITE);
 
         add(field14, constraints);
 
 //        ------   1 5   ------
-        val field15 = new JLabel("<MISC", JLabel.LEFT);
+        val field15 = new JLabel("<MESSAGES", JLabel.LEFT);
         field15.setFont(font);
         field15.setForeground(Colors.WHITE);
 
@@ -110,7 +110,7 @@ public class AOCMenuScreen extends AbstractScreen {
         add(field16, constraints);
 
 //        ------   2 1   ------
-        val field21 = new JLabel("ATC>", JLabel.RIGHT);
+        val field21 = new JLabel("UTC>", JLabel.RIGHT);
         field21.setFont(font);
         field21.setForeground(Colors.WHITE);
 
@@ -119,28 +119,28 @@ public class AOCMenuScreen extends AbstractScreen {
         add(field21, constraints);
 
 //        ------   2 2   ------
-        val field22 = new JLabel("REQUESTS>", JLabel.RIGHT);
+        val field22 = new JLabel("ATC>", JLabel.RIGHT);
         field22.setFont(font);
         field22.setForeground(Colors.WHITE);
 
         add(field22, constraints);
 
 //        ------   2 3   ------
-        val field23 = new JLabel("UTC>", JLabel.RIGHT);
+        val field23 = new JLabel("CALC FUEL>", JLabel.RIGHT);
         field23.setFont(font);
         field23.setForeground(Colors.WHITE);
 
         add(field23, constraints);
 
 //        ------   2 4   ------
-        val field24 = new JLabel("DELAYS>", JLabel.RIGHT);
+        val field24 = new JLabel("REQUESTS>", JLabel.RIGHT);
         field24.setFont(font);
         field24.setForeground(Colors.WHITE);
 
         add(field24, constraints);
 
 //        ------   2 5   ------
-        val field25 = new JLabel("MESSAGES>", JLabel.RIGHT);
+        val field25 = new JLabel("LINK TEST>", JLabel.RIGHT);
         field25.setFont(font);
         field25.setForeground(Colors.WHITE);
 

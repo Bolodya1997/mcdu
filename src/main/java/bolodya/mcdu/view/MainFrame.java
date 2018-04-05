@@ -573,8 +573,8 @@ public class MainFrame extends JFrame implements MCDUView {
         mainPanel.add(screenButton26);
 
 //        ------   screens   ------
-        val mcduMenuScreen = context.getBean("mcdu-menu", AbstractScreen.class);
-        setScreen(mcduMenuScreen);
+        val screen = context.getBean("mcdu-menu", AbstractScreen.class);
+        setScreen(screen);
 
 //        ------   end of init   ------
         setVisible(true);
